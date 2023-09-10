@@ -13,9 +13,11 @@ yarn run dev
 
 ## Running production:
 ```sh
+npm run build
 npm run start
 ```
 or
 ```sh
+yarn run build
 yarn run start
 ```
