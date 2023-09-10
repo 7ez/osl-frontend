@@ -1,11 +1,11 @@
-import './globals.css'
+import '../globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'osu! Server Launcher',
+  title: 'osu! Server Launcher: Missing Bridge',
   description: 'Connect to osu! servers with ease.',
 }
 
