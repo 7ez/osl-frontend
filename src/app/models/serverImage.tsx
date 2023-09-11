@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 export const ServerImage = (props: {
@@ -11,9 +11,12 @@ export const ServerImage = (props: {
   const { serverLogo, serverUrl, alt, width, height } = props;
 
   const resolveLogo = () => {
-    const strippedUrl = serverUrl.includes("//")
+    let strippedUrl = serverUrl.includes("//")
       ? serverUrl.split("//")[1]
       : serverUrl;
+    strippedUrl = strippedUrl.endsWith("/")
+      ? strippedUrl.substring(0, strippedUrl.length - 1)
+      : strippedUrl;
 
     const possibleIconUrls = [
       `https://osu.${strippedUrl}/assets/img/logo.png`,
