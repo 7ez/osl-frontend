@@ -4,7 +4,7 @@ import { faEyeSlash, faLock } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { ImageWithFallback } from "./imageWithFallback";
+import { ServerImage } from "./serverImage";
 
 export default function Server(props: {
   id: number;
@@ -211,13 +211,13 @@ export default function Server(props: {
             ) : (
               <div />
             )}
-            <ImageWithFallback
-              src={props.logo_url}
-              fallbackSrc="/fallback.png"
+            <ServerImage
+              serverLogo={props.logo_url}
+              serverUrl={props.url}
               alt={`${props.name} Logo`}
               height="32"
               width="32"
-            ></ImageWithFallback>
+            ></ServerImage>
           </div>
           <p className="pl-2 card-title">{props.name}</p>
         </div>
