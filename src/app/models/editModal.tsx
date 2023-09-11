@@ -10,7 +10,6 @@ type EditProps = {
     oldServerName: string;
     oldServerLogo: string;
     oldServerUrl: string;
-    id: number;
 };
 
 export default function EditModal({
@@ -22,8 +21,7 @@ export default function EditModal({
     setCredentialsOpen,
     oldServerName,
     oldServerLogo,
-    oldServerUrl,
-    id,
+    oldServerUrl
 }: EditProps) {
     const [serverName, setServerName] = useState(oldServerName);
     const [serverLogo, setServerLogo] = useState(oldServerLogo);
@@ -35,36 +33,36 @@ export default function EditModal({
     };
 
     const openCredentials = () => {
-        setCredentialsOpen(true);
+      setCredentialsOpen(true);
     };
 
     const openDelete = () => {
-        setDeleteOpen(true);
+      setDeleteOpen(true);
     };
 
     useEffect(() => {
-        if (isOpen && !(deleteOpen || credentialsOpen)) {
-            modal.showModal();
-        } else {
-            modal.close();
-        }
+      if (isOpen && !(deleteOpen || credentialsOpen)) {
+        modal.showModal();
+      } else {
+        modal.close();
+      }
     });
 
     const saveEdit = () => {
-        let servers: { id: number; name: string; logo: string; url: string }[] =
-          JSON.parse(localStorage.getItem("servers")!);
+      let servers: { name: string; logo: string; url: string }[] =
+        JSON.parse(localStorage.getItem("servers")!);
     
-        servers.forEach((srv) => {
-          if (srv.id == id) {
-            srv.name = serverName;
-            srv.logo = serverLogo;
-            srv.url = serverUrl;
-          }
-        });
+      servers.forEach((srv) => {
+        if (srv.url === oldServerUrl) {
+          srv.name = serverName;
+          srv.logo = serverLogo;
+          srv.url = serverUrl;
+        }
+      });
     
-        localStorage.setItem("servers", JSON.stringify(servers));
-        closeModal();
-      };
+      localStorage.setItem("servers", JSON.stringify(servers));
+      closeModal();
+    };
 
     return (
         <dialog className="modal" ref={ (mdl) => modal = mdl as HTMLDialogElement }>

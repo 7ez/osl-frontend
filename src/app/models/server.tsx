@@ -10,10 +10,10 @@ import EditModal from "./editModal";
 import { Credentials } from "./credentials";
 
 export default function Server(props: {
-  id: number;
   name: string;
   logo_url: string;
   url: string;
+  setServers: (servers: { name: string; logo: string; url: string }[]) => void;
 }) {
   const [credentialsOpen, _setCredentialsOpen ] = useState(false);
   const [deleteOpen, _setDeleteOpen ] = useState(false);
@@ -21,6 +21,8 @@ export default function Server(props: {
 
   const setCredentialsOpen = (isOpen: boolean) => {
     _setCredentialsOpen(isOpen);
+
+    if (!isOpen) setEditOpen(false);
   };
 
   const setDeleteOpen = (isOpen: boolean) => {
@@ -29,6 +31,11 @@ export default function Server(props: {
 
   const setEditOpen = (isOpen: boolean) => {
     _setEditOpen(isOpen);
+
+    if (!isOpen) {
+      const servers: { name: string; logo: string; url: string }[] = JSON.parse(localStorage.getItem("servers")!);
+      props.setServers(servers);
+    }
   };
 
   const openEdit = () => {
@@ -58,7 +65,7 @@ export default function Server(props: {
   };
 
   return (
-    <div className="card w-64 h-40 bg-neutral shadow-xl mt-3">
+    <ul className="card w-64 h-40 bg-neutral shadow-xl mt-3">
       <div className="card-body">
         <div className="flex flex-row">
           <div className="inline">
@@ -110,7 +117,6 @@ export default function Server(props: {
         oldServerName={props.name}
         oldServerLogo={props.logo_url}
         oldServerUrl={props.url}
-        id={props.id}
       />
 
       <CredentialsModal 
@@ -127,7 +133,8 @@ export default function Server(props: {
         setIsOpen={setDeleteOpen}
         serverName={props.name}
         serverUrl={props.url}
+        setServers={props.setServers}
       />
-    </div>
+    </ul>
   );
 }

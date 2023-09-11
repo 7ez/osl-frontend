@@ -4,6 +4,7 @@ import { Credentials } from "./credentials";
 type DeleteProps = {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    setServers: (servers: { name: string; logo: string; url: string }[]) => void;
     serverName: string;
     serverUrl: string;
 };
@@ -11,6 +12,7 @@ type DeleteProps = {
 export default function DeleteModal({
     isOpen,
     setIsOpen,
+    setServers,
     serverName,
     serverUrl
 }: DeleteProps) {
@@ -22,7 +24,7 @@ export default function DeleteModal({
     useEffect(() => isOpen ? modal.showModal() : modal.close());
 
     const deleteServer = () => {
-      let servers: { id: number; name: string; logo: string; url: string }[] =
+      let servers: { name: string; logo: string; url: string }[] =
         JSON.parse(localStorage.getItem("servers")!);
       let credentials: Credentials[] =
         JSON.parse(localStorage.getItem("credentials")!);
@@ -32,7 +34,7 @@ export default function DeleteModal({
     
       localStorage.setItem("servers", JSON.stringify(servers));
       localStorage.setItem("credentials", JSON.stringify(credentials));
-      window.location.reload();
+      setServers(servers);
     };
 
     return (

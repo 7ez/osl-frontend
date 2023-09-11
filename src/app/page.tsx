@@ -8,8 +8,8 @@ import SettingsModal from "./models/settingsModal";
 import AddModal from "./models/addModal";
 
 export default function Home() {
-  const [servers, setServers] = useState<
-    { id: number; name: string; logo: string; url: string }[]
+  const [servers, _setServers] = useState<
+    { name: string; logo: string; url: string }[]
   >([]);
   const [settingsOpen, _setSettingsOpen] = useState(false);
   const [addOpen, _setAddOpen] = useState(false);
@@ -20,14 +20,20 @@ export default function Home() {
       window.location.href = "/setup";
     }
 
-    let servers_str = localStorage.getItem("servers");
+    if (servers.length === 0) {
+      let servers_str = localStorage.getItem("servers");
 
-    if (servers_str === null) {
-      localStorage.setItem("servers", JSON.stringify([]));
-    } else {
-      setServers(JSON.parse(servers_str));
+      if (servers_str === null) {
+        localStorage.setItem("servers", JSON.stringify([]));
+      } else {
+        _setServers(JSON.parse(servers_str));
+      }
     }
   }, []);
+
+  const setServers = (servers: { name: string; logo: string; url: string }[]) => {
+    _setServers(servers);
+  };
 
   const setSettingsOpen = (isOpen: boolean) => {
     _setSettingsOpen(isOpen);
@@ -63,30 +69,30 @@ export default function Home() {
         </div>
       </nav>
 
-      <div
+      <li
         className="bg-base-200 h-full pt-2 pl-3 flex flex-row flex-wrap"
         style={{ alignContent: "flex-start" }}
       >
         {servers.map(
-          (srv: { id: number; name: string; logo: string; url: string }) => {
+          (srv) => {
             return (
               // why does this work and how
               <>
                 <Server
-                  id={srv.id}
                   name={srv.name}
                   logo_url={srv.logo}
                   url={srv.url}
+                  setServers={setServers}
                 />
                 <div className="w-3"></div>
               </>
             );
           }
         )}
-      </div>
+      </li>
 
       <button
-        className="btn btn-circle btn-ghost fixed bottom-5 right-5 text-white"
+        className="btn btn-circle btn-primary fixed bottom-5 right-5 text-white text-center"
         onClick={ () => setAddOpen(true) }
       >
         +
@@ -95,6 +101,7 @@ export default function Home() {
       <AddModal
         isOpen={addOpen}
         setIsOpen={setAddOpen}
+        setServers={setServers}
       />
 
       <SettingsModal
