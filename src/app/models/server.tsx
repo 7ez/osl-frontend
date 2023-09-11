@@ -4,7 +4,6 @@ import { faEyeSlash, faLock } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import Image from "next/image";
 import { ImageWithFallback } from "./imageWithFallback";
 
 export default function Server(props: {
@@ -370,8 +369,8 @@ export default function Server(props: {
           <div className="form-control">
             <p>
               Are you <b>sure</b> you want to{" "}
-              <text className="text-red-500">delete</text> {props.name} from
-              your server list?
+              <a className="text-red-500">delete</a> {props.name} from your
+              server list?
             </p>
             <p>This action is irreversible.</p>
             <div className="pt-6" />
