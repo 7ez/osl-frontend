@@ -22,7 +22,7 @@ export default function CredentialsModal({
 }: CredentialProps) {
     const [username, setUsername] = useState(oldUsername ?? "");
     const [password, setPassword] = useState(oldPassword ?? "");
-    const [active, setActive] = useState(isActive ?? true);
+    const [active, setActive] = useState(isActive == null ? true : isActive);
     let passwordInput: HTMLInputElement;
     let modal: HTMLDialogElement;
 
