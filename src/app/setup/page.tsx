@@ -14,11 +14,17 @@ export default function Setup() {
             browser.
           </p>
           <p className="text-xl">
-            Setup is pretty simple and requires you to follow these steps:.
+            You will only see this notification once
           </p>
           <p className="text-xl">
-            Download OSL Bridge (the app which launches your game/sets
-            credentials) from{" "}
+            For OSL to function properly, it needs you to download a small application.
+          </p>
+          <p className="text-xl">
+            The setup is pretty simple and requires you to follow these steps:
+          </p>
+          <p className="text-xl">
+            Download OSL Bridge (the app which launches your game/
+            logs you in automatically) from{" "}
             <a
               href="https://github.com/7ez/osl-bridge/releases/latest/download/osl-bridge.exe"
               className="text-blue-400"
