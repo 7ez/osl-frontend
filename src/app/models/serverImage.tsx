@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export const ServerImage = (props: {
@@ -41,12 +41,19 @@ export const ServerImage = (props: {
     });
     if (!gotLogo) setImgSrc("/fallback.png");
   };
-
+  const hasLogoUrl = serverLogo && serverLogo.length >= 0;
   const logoUrl = serverLogo.startsWith("http")
     ? serverLogo
     : `https://${serverLogo}`;
 
-  const [imgSrc, setImgSrc] = useState(logoUrl);
+  const [imgSrc, setImgSrc] = useState(hasLogoUrl ? logoUrl : "/fallback.png");
+
+  useEffect(() => {
+    if (!hasLogoUrl) {
+      // Trying to resolve the logo if no logo url has been defined
+      resolveLogo();
+    }
+  });
 
   return (
     <Image

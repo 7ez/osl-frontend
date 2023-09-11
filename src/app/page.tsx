@@ -35,19 +35,13 @@ export default function Home() {
     const serverIcon = addModal.getElementsByTagName("input")[1];
     const serverURL = addModal.getElementsByTagName("input")[2];
 
-    if (
-      serverName.value == "" ||
-      serverIcon.value == "" ||
-      serverURL.value == ""
-    )
-      return;
+    if (serverName.value == "" || serverURL.value == "") return;
 
     var error = false;
     servers.forEach(
       (srv: { id: number; name: string; logo: string; url: string }) => {
         if (
           srv.name == serverName.value ||
-          srv.name == serverIcon.value ||
           srv.name == serverURL.value ||
           serverName.value.length < 3
         ) {
@@ -55,18 +49,19 @@ export default function Home() {
           error = true;
         }
 
-        if (
-          serverIcon.value.length < 4 ||
-          !serverIcon.value.startsWith("http") ||
-          !serverIcon.value.includes(".")
-        ) {
-          serverIcon.classList.add("input-error");
-          error = true;
+        if (serverIcon) {
+          if (
+            serverIcon.value.length < 4 ||
+            !serverIcon.value.startsWith("http") ||
+            !serverIcon.value.includes(".")
+          ) {
+            serverIcon.classList.add("input-error");
+            error = true;
+          }
         }
 
         if (
           srv.url == serverURL.value ||
-          srv.url == serverIcon.value ||
           srv.url == serverName.value ||
           serverURL.value.length < 4
         ) {
@@ -81,7 +76,7 @@ export default function Home() {
     var newServer = {
       id: servers.length > 0 ? servers.length + 1 : 0,
       name: serverName.value,
-      logo: serverIcon.value,
+      logo: serverIcon.value ?? "",
       url: serverURL.value,
     };
 
