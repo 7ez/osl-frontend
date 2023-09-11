@@ -2,11 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Server from "./models/server";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCog } from "@fortawesome/free-solid-svg-icons";
+import SettingsModal from "./models/settingsModal";
+import AddModal from "./models/addModal";
 
 export default function Home() {
   const [servers, setServers] = useState<
     { id: number; name: string; logo: string; url: string }[]
   >([]);
+  const [settingsOpen, _setSettingsOpen] = useState(false);
+  const [addOpen, _setAddOpen] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("hasVisited") !== "true") {
@@ -14,87 +20,46 @@ export default function Home() {
       window.location.href = "/setup";
     }
 
-    var servers_str = localStorage.getItem("servers");
+    let servers_str = localStorage.getItem("servers");
 
-    if (servers_str == null) {
+    if (servers_str === null) {
       localStorage.setItem("servers", JSON.stringify([]));
     } else {
       setServers(JSON.parse(servers_str));
     }
   }, []);
 
-  const showAddModal = () => {
-    const addModal = document.getElementById("addModal") as HTMLDialogElement;
-    if (!addModal.open) addModal.showModal();
-    else addModal.close();
+  const setSettingsOpen = (isOpen: boolean) => {
+    _setSettingsOpen(isOpen);
   };
 
-  const saveAdd = () => {
-    const addModal = document.getElementById("addModal") as HTMLDialogElement;
-    const serverName = addModal.getElementsByTagName("input")[0];
-    const serverIcon = addModal.getElementsByTagName("input")[1];
-    const serverURL = addModal.getElementsByTagName("input")[2];
-
-    if (serverName.value == "" || serverURL.value == "") return;
-
-    var error = false;
-    servers.forEach(
-      (srv: { id: number; name: string; logo: string; url: string }) => {
-        if (
-          srv.name == serverName.value ||
-          srv.name == serverURL.value ||
-          serverName.value.length < 3
-        ) {
-          serverName.classList.add("input-error");
-          error = true;
-        }
-
-        if (serverIcon) {
-          if (
-            serverIcon.value.length < 4 ||
-            !serverIcon.value.startsWith("http") ||
-            !serverIcon.value.includes(".")
-          ) {
-            serverIcon.classList.add("input-error");
-            error = true;
-          }
-        }
-
-        if (
-          srv.url == serverURL.value ||
-          srv.url == serverName.value ||
-          serverURL.value.length < 4
-        ) {
-          serverURL.classList.add("input-error");
-          error = true;
-        }
-      }
-    );
-
-    if (error) return;
-
-    var newServer = {
-      id: servers.length > 0 ? servers.length + 1 : 0,
-      name: serverName.value,
-      logo: serverIcon.value ?? "",
-      url: serverURL.value,
-    };
-
-    servers.push(newServer);
-    localStorage.setItem("servers", JSON.stringify(servers));
-    addModal.close();
-    setServers(servers); // NOTE: this somehow doesn't re-render the page
-    window.location.reload();
+  const setAddOpen = (isOpen: boolean) => {
+    _setAddOpen(isOpen);
   };
 
   return (
-    // TODO: fix scrollbar popping up for no reason
     <main className="flex h-screen flex-col">
       <nav className="static navbar navbar-center h-20 bg-base-200">
         <div className="flex-1 items-center justify-center">
           <a href="#" className="text-4xl font-bold">
             osu! Server Launcher
           </a>
+        </div>
+
+        <div className="flex-none">
+          <div className="flex items-center justify-center">
+            <button 
+              className="btn btn-circle btn-ghost h-8"
+              onClick={ () => setSettingsOpen(true) }
+            >
+              <FontAwesomeIcon 
+                icon={faCog}
+                height="16"
+                width="16"
+                className="text-white"
+              />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -120,61 +85,22 @@ export default function Home() {
         )}
       </div>
 
-      <dialog id="addModal" className="modal">
-        <div className="modal-box">
-          <p className="text-lg font-bold">Add Server</p>
-          <div className="pt-3" />
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Name</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Server Name"
-              id="server-name"
-              className="input input-bordered"
-            />
-            <label className="label">
-              <span className="label-text">Logo URL</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Logo URL"
-              id="server-logo"
-              className="input input-bordered"
-            />
-            <label className="label">
-              <span className="label-text">Server URL</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Server URL"
-              id="server-url"
-              className="input input-bordered"
-            />
-            <div className="pt-3" />
-            <div className="flex flex-row">
-              <button
-                className="btn btn-primary"
-                type="button"
-                onClick={saveAdd}
-              >
-                Save
-              </button>
-              <div className="w-2" />
-              <button className="btn" type="button" onClick={showAddModal}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </dialog>
       <button
-        className="btn btn-circle btn-primary fixed bottom-5 right-5"
-        onClick={showAddModal}
+        className="btn btn-circle btn-ghost fixed bottom-5 right-5 text-white"
+        onClick={ () => setAddOpen(true) }
       >
         +
       </button>
+
+      <AddModal
+        isOpen={addOpen}
+        setIsOpen={setAddOpen}
+      />
+
+      <SettingsModal
+        isOpen={settingsOpen}
+        setIsOpen={setSettingsOpen}
+      />
     </main>
   );
 }

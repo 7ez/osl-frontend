@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
@@ -24,6 +26,7 @@ export const ServerImage = (props: {
       `https://${strippedUrl}/assets/img/logo.png`,
       `https://${strippedUrl}/assets/img/icon.png`,
       `https://${strippedUrl}/static/images/favicon-32x32.png`,
+      `https://${strippedUrl}/static/favicon/favicon.ico`,
       `https://${strippedUrl}/favicon.ico`,
     ];
     let gotLogo = false;
@@ -40,13 +43,15 @@ export const ServerImage = (props: {
       } catch (_err) {}
     });
     if (!gotLogo) setImgSrc("/fallback.png");
+
   };
+
   const hasLogoUrl = serverLogo && serverLogo.length >= 0;
   const logoUrl = serverLogo.startsWith("http")
     ? serverLogo
     : `https://${serverLogo}`;
 
-  const [imgSrc, setImgSrc] = useState(hasLogoUrl ? logoUrl : "/fallback.png");
+  const [imgSrc, setImgSrc] = useState<string>(hasLogoUrl ? logoUrl : "/fallback.png");
 
   useEffect(() => {
     if (!hasLogoUrl) {
