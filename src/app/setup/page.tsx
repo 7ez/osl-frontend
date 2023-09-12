@@ -14,7 +14,7 @@ export default function Setup() {
             browser.
           </p>
           <p className="text-xl">
-            You will only see this notification once
+            You will only see this notification once.
           </p>
           <p className="text-xl">
             For OSL to function properly, it needs you to download a small application.
