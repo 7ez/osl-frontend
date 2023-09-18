@@ -58,7 +58,7 @@ export const ServerImage = (props: {
       // Trying to resolve the logo if no logo url has been defined
       resolveLogo();
     }
-  });
+  }, []); //execute only once
 
   return (
     <Image
