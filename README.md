@@ -1,5 +1,5 @@
 # osl-frontend
-The frontend for OSL. Live example: https://osl.fumo.lol<br />
+The frontend for OSL. Live example: https://osl.halcyon.moe<br />
 The code isn't perfect, but it works.
 
 ## Running the development server:
