@@ -1,12 +1,17 @@
 "use client";
 
+import { 
+  faIcons, 
+  faPenToSquare, 
+  faPlus, 
+  faSignature 
+} from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
-import { faIcons, faPenToSquare, faPlus, faSignature } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 
 export default function OwnServer() {

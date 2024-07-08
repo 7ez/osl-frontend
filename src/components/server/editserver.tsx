@@ -1,13 +1,24 @@
 "use client";
 
-import { faEdit, faIcons, faPencil, faPenToSquare, faSignature } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
+import { 
+  faIcons, 
+  faPencil, 
+  faPenToSquare,
+  faSignature 
+} from "@fortawesome/free-solid-svg-icons";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogTitle
+} from "@/components/ui/dialog";
 import { useState } from "react";
-import { useToast } from "../ui/use-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function EditServer(props: { open: boolean, onOpenChange: (open?: boolean) => void, serverUrl: string, serverName: string, serverLogo: string }) {
   const [serverName, setServerName] = useState<string>(props.serverName);

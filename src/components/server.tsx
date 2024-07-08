@@ -6,25 +6,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPlay, faX } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Credentials } from "@/lib/credentials";
-import AddCredentials from "./server/addcredentials";
+import { ServerImage } from "@/components/server/serverimage";
+import AddCredentials from "@/components/server/addcredentials";
+import EditCredentials from "@/components/server/editcredentials";
+import EditServer from "@/components/server/editserver";
+import DeleteServer from "@/components/server/deleteserver";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faPlay, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import EditCredentials from "./server/editcredentials";
-import EditServer from "./server/editserver";
-import { ServerImage } from "./server/serverimage";
-import DeleteServer from "./server/deleteserver";
 
 export default function Server(props: { serverName: string, serverLogo: string, serverUrl: string }) {
   const [contextMenuDisabled, setContextMenuDisabled] = useState(false);

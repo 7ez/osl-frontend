@@ -1,12 +1,27 @@
-import { faEye, faEyeSlash, faLock, faPencil, faPlus, faTrash, faUnlock, faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import {
+  faEye,
+  faEyeSlash,
+  faLock,
+  faPencil,
+  faTrash,
+  faUnlock,
+  faUser
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
-import { useState } from "react";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Credentials } from "@/lib/credentials";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 
 export default function EditCredentials(props: { onOpenChange: (open?: boolean) => void, serverUrl: string, username: string, password: string }) {
   const [passwordShown, setPasswordShown] = useState<boolean>(false);

@@ -1,12 +1,25 @@
-import { faEye, faEyeSlash, faLock, faPlus, faUnlock, faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { 
+  faEye, 
+  faEyeSlash, 
+  faPlus, 
+  faUnlock, 
+  faUser 
+} from "@fortawesome/free-solid-svg-icons";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
-import { useState } from "react";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Credentials } from "@/lib/credentials";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 
 export default function AddCredentials(props: { onOpenChange: (open?: boolean) => void, serverUrl: string }) {
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
@@ -50,7 +63,7 @@ export default function AddCredentials(props: { onOpenChange: (open?: boolean) =
     <Dialog onOpenChange={props.onOpenChange}>
       <DialogTrigger asChild>
         <FontAwesomeIcon
-          icon={faLock}
+          icon={faUnlock}
           height="16"
           width="16"
           className="text-yellow-500 text-2xl absolute pl-5 pt-3"

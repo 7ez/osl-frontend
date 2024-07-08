@@ -8,12 +8,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import VerifiedServers from "./verifiedservers";
-import OwnServer from "./ownserver";
+import { Button } from "@/components/ui/button";
+import VerifiedServers from "@/components/dialog/verifiedservers";
+import OwnServer from "@/components/dialog/ownserver";
 
 export default function AddServerDialog() {
   const [selectedTab, setSelectedTab] = useState<number>(1);

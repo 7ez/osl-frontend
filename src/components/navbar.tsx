@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "./ui/button";
 
 export default function Navbar() {
   return (
