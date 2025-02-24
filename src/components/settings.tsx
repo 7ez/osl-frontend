@@ -21,7 +21,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Settings() {
   const { toast } = useToast();
-  const [acknowledgedDeleteWarning, setAcknowledgedDeleteWarning] = useState<boolean>(false);
+  const acknowledgedDeleteWarning = useRef<boolean>(false);
   const serverDataInput = useRef<HTMLInputElement>(null);
   const deleteServersButton = useRef<HTMLButtonElement>(null);
 
@@ -129,12 +129,12 @@ export default function Settings() {
       return;
     }
 
-    if (!acknowledgedDeleteWarning) {
+    if (!acknowledgedDeleteWarning.current) {
       toast({
         title: "Wait a minute!",
         description: "Are you sure you want to delete ALL of your saved servers and credentials? This cannot be undone.",
       });
-      setAcknowledgedDeleteWarning(true);
+      acknowledgedDeleteWarning.current = true;
       deleteServersButton.current!.disabled = true;
       setTimeout(() => {
         if (deleteServersButton.current !== null) // fixes an error where the modal is long closed and it tries to set disabled
@@ -153,7 +153,7 @@ export default function Settings() {
   }
 
   return (
-    <Dialog onOpenChange={(open) => { if (!open) { setAcknowledgedDeleteWarning(false); } }}>
+    <Dialog onOpenChange={(open) => { if (!open) { acknowledgedDeleteWarning.current = false; } }}>
       <DialogTrigger asChild>
         <Button variant="ghost" className="text-white h-8">
           <FontAwesomeIcon icon={faCog} width={17} height={16} />
