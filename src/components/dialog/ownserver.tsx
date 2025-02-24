@@ -35,6 +35,7 @@ export default function OwnServer(): JSX.Element {
     formErrors.current.splice(formErrorIdx, 1);
   }
 
+  // form validation from wish :D
   function disableIfInvalidInput(): void {
     if ((serverNameInput.current?.value.length ?? 0) < 2) {
       serverNameInput.current?.classList.add("border-red-500");
@@ -48,7 +49,18 @@ export default function OwnServer(): JSX.Element {
       removeFormError("name");
     }
 
-    if ((serverUrlInput.current?.value.length ?? 0) < 2 || serverIconInput.current?.value.toLowerCase().includes("http")) {
+    if (!serverIconInput.current?.value.toLowerCase().startsWith("http")) {
+      serverIconInput.current?.classList.add("border-red-500");
+      setCanAddServer(false);
+      
+      if (!formErrors.current.includes("icon"))
+        formErrors.current.push("icon");
+    } else {
+      serverIconInput.current?.classList.remove("border-red-500");
+      removeFormError("icon");
+    }
+
+    if ((serverUrlInput.current?.value.length ?? 0) < 2 || serverUrlInput.current?.value.toLowerCase().includes("http")) {
       serverUrlInput.current?.classList.add("border-red-500");
       setCanAddServer(false);
       
