@@ -1,0 +1,7 @@
+services:
+    frontend:
+        build: .
+
+        # shouldn't be hardcoded but oh well
+        ports:
+            - "3000:3000"
