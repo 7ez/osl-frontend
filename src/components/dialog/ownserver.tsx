@@ -39,7 +39,6 @@ export default function OwnServer(): JSX.Element {
   function disableIfInvalidInput(): void {
     if ((serverNameInput.current?.value.length ?? 0) < 2) {
       serverNameInput.current?.classList.add("border-red-500");
-      setCanAddServer(false);
       
       if (!formErrors.current.includes("name"))
         formErrors.current.push("name");
@@ -51,7 +50,6 @@ export default function OwnServer(): JSX.Element {
 
     if (!serverIconInput.current?.value.toLowerCase().startsWith("http")) {
       serverIconInput.current?.classList.add("border-red-500");
-      setCanAddServer(false);
       
       if (!formErrors.current.includes("icon"))
         formErrors.current.push("icon");
@@ -62,7 +60,6 @@ export default function OwnServer(): JSX.Element {
 
     if ((serverUrlInput.current?.value.length ?? 0) < 2 || serverUrlInput.current?.value.toLowerCase().includes("http")) {
       serverUrlInput.current?.classList.add("border-red-500");
-      setCanAddServer(false);
       
       if (!formErrors.current.includes("url"))
         formErrors.current.push("url");
@@ -72,10 +69,7 @@ export default function OwnServer(): JSX.Element {
       removeFormError("url");
     }
 
-    console.log(formErrors.current);
-    if (formErrors.current.length === 0) {
-      setCanAddServer(true);
-    }
+    setCanAddServer(formErrors.current.length === 0);
   }
 
   function addServer(): void {
