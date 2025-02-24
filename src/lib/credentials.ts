@@ -1,5 +1,5 @@
 export interface Credentials {
-    url: string;
+    serverId: string;
     username: string;
     password: string;
 }

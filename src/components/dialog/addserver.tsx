@@ -15,8 +15,11 @@ import { Button } from "@/components/ui/button";
 import VerifiedServers from "@/components/dialog/verifiedservers";
 import OwnServer from "@/components/dialog/ownserver";
 
+const VERIFIED_SERVERS_TAB: number = 1;
+const OWN_SERVER_TAB: number = 2;
+
 export default function AddServerDialog() {
-  const [selectedTab, setSelectedTab] = useState<number>(1);
+  const [selectedTab, setSelectedTab] = useState<number>(OWN_SERVER_TAB);
 
   return (
     <Dialog>
@@ -33,12 +36,14 @@ export default function AddServerDialog() {
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-row">
-          <Button className="w-[50%]" variant={selectedTab == 1 ? "outline" : "ghost"} onClick={() => { setSelectedTab(1); }}>Verified Servers</Button>
-          <Button className="w-[50%]" variant={selectedTab == 2 ? "outline" : "ghost"} onClick={() => { setSelectedTab(2); }}>Add your own</Button>
+          {/* unused for now
+            <Button className="w-[50%]" variant={selectedTab == VERIFIED_SERVERS_TAB ? "outline" : "ghost"} onClick={() => { setSelectedTab(1); }}>Verified Servers</Button> 
+          */}
+          <Button className={`w-[100%]`} variant={selectedTab == OWN_SERVER_TAB ? "outline" : "ghost"} onClick={() => { setSelectedTab(OWN_SERVER_TAB); }}>Add your own</Button>
         </div>
 
-        {selectedTab == 1 ? <VerifiedServers /> : null}
-        {selectedTab == 2 ? <OwnServer /> : null}
+        {/* {selectedTab == VERIFIED_SERVERS_TAB ? <VerifiedServers /> : null} */}
+        {selectedTab == OWN_SERVER_TAB ? <OwnServer /> : null}
       </DialogContent>
     </Dialog>
   );

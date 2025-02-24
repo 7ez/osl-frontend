@@ -25,14 +25,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlay, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-export default function Server(props: { serverName: string, serverLogo: string, serverUrl: string }) {
+export default function Server(props: { serverId: string, serverName: string, serverLogo: string, serverUrl: string }) {
   const [contextMenuDisabled, setContextMenuDisabled] = useState(false);
   const [editServer, setEditServer] = useState<boolean>(false);
   const [deleteServer, setDeleteServer] = useState<boolean>(false);
 
   function getCredentials(): Credentials | null {
     let credentials: Credentials[] = JSON.parse(localStorage.getItem('credentials') || '[]');
-    return credentials.find((credential) => credential.url === props.serverUrl) || null;
+    return credentials.find((credential) => credential.serverId === props.serverId) || null;
+  }
+
+  function launchServer(credentials: Credentials | null) {
+    if (credentials) {
+      window.open(`osl://launch-credentials/${credentials.username}:${credentials.password}/${props.serverUrl}`);
+      return;
+    }
+
+    window.open(`osl://launch/${props.serverUrl}`);
   }
 
   function toggleContextMenu(disableContextMenu?: boolean) {
@@ -59,6 +68,8 @@ export default function Server(props: { serverName: string, serverLogo: string, 
     }
   }
 
+  let savedCredentials = getCredentials();
+
   return (
     <ContextMenu>
       <ContextMenuTrigger disabled={contextMenuDisabled}>
@@ -68,13 +79,13 @@ export default function Server(props: { serverName: string, serverLogo: string, 
           <CardHeader className="flex-row">
 
             <div className="inline">
-              {getCredentials() == null ? 
+              {savedCredentials == null ? 
                 <AddCredentials onOpenChange={toggleContextMenu} serverUrl={props.serverUrl} /> :
                 <EditCredentials 
                   onOpenChange={toggleContextMenu} 
                   serverUrl={props.serverUrl} 
-                  username={getCredentials()!.username}
-                  password={getCredentials()!.password} 
+                  username={savedCredentials!.username}
+                  password={savedCredentials!.password} 
                 />
               }
               <ServerImage serverLogo={props.serverLogo} serverUrl={props.serverUrl} alt={`${props.serverName}'s Logo`} width={32} height={32} />
@@ -83,7 +94,7 @@ export default function Server(props: { serverName: string, serverLogo: string, 
             <CardTitle className="flex text-center">{props.serverName}</CardTitle>
           </CardHeader>
           <CardFooter className="mt-6">
-            <Button className="w-full" onClick={() => { window.open(`osl://launch/${props.serverUrl}`) }}>Launch</Button>
+            <Button className="w-full" onClick={() => { launchServer(savedCredentials) }}>Launch</Button>
           </CardFooter>
         </Card>
       </ContextMenuTrigger>
@@ -93,7 +104,7 @@ export default function Server(props: { serverName: string, serverLogo: string, 
           <Label className="font-bold w-full text-center">{props.serverName}</Label>
         </div>
         <Separator />
-        <ContextMenuItem onClick={() => { window.open(`osl://launch/${props.serverUrl}`) }}>
+        <ContextMenuItem onClick={() => { launchServer(savedCredentials) }}>
           <FontAwesomeIcon icon={faPlay} />
           <div className="mr-2"></div>
           Launch
