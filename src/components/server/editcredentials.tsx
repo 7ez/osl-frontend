@@ -23,7 +23,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-export default function EditCredentials(props: { onOpenChange: (open?: boolean) => void, serverUrl: string, username: string, password: string }) {
+export default function EditCredentials(props: { onOpenChange: (open?: boolean) => void, serverId: string, username: string, password: string }) {
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [username, setUsername] = useState<string>(props.username);
   const [password, setPassword] = useState<string>(props.password);
@@ -41,7 +41,7 @@ export default function EditCredentials(props: { onOpenChange: (open?: boolean) 
     let credentials: Credentials[] = JSON.parse(localStorage.getItem("credentials") || "[]");
 
     // delete old credentials just in case.
-    let oldCredentials = credentials.find((cred) => cred.url === props.serverUrl);
+    let oldCredentials = credentials.find((cred) => cred.serverId === props.serverId);
     if (oldCredentials !== undefined) {
       let oldIdx = credentials.indexOf(oldCredentials);
 
@@ -49,7 +49,7 @@ export default function EditCredentials(props: { onOpenChange: (open?: boolean) 
     }
 
     credentials.push({
-      url: props.serverUrl,
+      serverId: props.serverId,
       username: username,
       password: password
     });
@@ -64,7 +64,7 @@ export default function EditCredentials(props: { onOpenChange: (open?: boolean) 
   function deleteCredentials(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
     let credentials: Credentials[] = JSON.parse(localStorage.getItem("credentials") || "[]");
 
-    let cred = credentials.find((cred) => cred.username === username && cred.password === password && cred.url === props.serverUrl)!;
+    let cred = credentials.find((cred) => cred.username === username && cred.password === password && cred.serverId === props.serverId)!;
     credentials.splice(credentials.indexOf(cred), 1);
 
     localStorage.setItem("credentials", JSON.stringify(credentials));

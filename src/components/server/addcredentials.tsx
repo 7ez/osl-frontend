@@ -21,7 +21,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-export default function AddCredentials(props: { onOpenChange: (open?: boolean) => void, serverUrl: string }) {
+export default function AddCredentials(props: { onOpenChange: (open?: boolean) => void, serverId: string }) {
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -39,7 +39,7 @@ export default function AddCredentials(props: { onOpenChange: (open?: boolean) =
     let credentials: Credentials[] = JSON.parse(localStorage.getItem("credentials") || "[]");
 
     // delete old credentials just in case.
-    let oldCredentials = credentials.find((cred) => cred.url === props.serverUrl);
+    let oldCredentials = credentials.find((cred) => cred.serverId === props.serverId);
     if (oldCredentials !== undefined) {
       let oldIdx = credentials.indexOf(oldCredentials);
 
@@ -47,7 +47,7 @@ export default function AddCredentials(props: { onOpenChange: (open?: boolean) =
     }
 
     credentials.push({
-      url: props.serverUrl,
+      serverId: props.serverId,
       username: username,
       password: password
     });

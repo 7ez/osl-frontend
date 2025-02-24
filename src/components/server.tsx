@@ -80,10 +80,10 @@ export default function Server(props: { serverId: string, serverName: string, se
 
             <div className="inline">
               {savedCredentials == null ? 
-                <AddCredentials onOpenChange={toggleContextMenu} serverUrl={props.serverUrl} /> :
+                <AddCredentials onOpenChange={toggleContextMenu} serverId={props.serverId} /> :
                 <EditCredentials 
                   onOpenChange={toggleContextMenu} 
-                  serverUrl={props.serverUrl} 
+                  serverId={props.serverId} 
                   username={savedCredentials!.username}
                   password={savedCredentials!.password} 
                 />
