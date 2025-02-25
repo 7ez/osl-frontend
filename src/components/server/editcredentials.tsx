@@ -21,23 +21,31 @@ import { Button } from "@/components/ui/button";
 import { Credentials } from "@/lib/credentials";
 import { useToast } from "@/components/ui/use-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-export default function EditCredentials(props: { onOpenChange: (open?: boolean) => void, serverId: string, username: string, password: string }) {
+export default function EditCredentials(props: { 
+  onOpenChange: (open?: boolean) => void, 
+  serverId: string, 
+  username: string, 
+  password: string 
+}) {
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>(props.username);
-  const [password, setPassword] = useState<string>(props.password);
+  const usernameInput = useRef<HTMLInputElement>(null);
+  const passwordInput = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  function updateUsername(event: React.ChangeEvent<HTMLInputElement>): void {
-    setUsername(event.target.value);
-  }
-
-  function updatePassword(event: React.ChangeEvent<HTMLInputElement>): void {
-    setPassword(event.target.value);
-  }
-
   function editCredentials(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    let username = usernameInput.current?.value;
+    let password = passwordInput.current?.value;
+
+    if (username === undefined || password === undefined || username.length < 2 || password.length < 2) {
+      toast({
+        title: "Uh oh!",
+        description: "Some fields are too short. Make sure they are over 2 characters long.",
+      });
+      return;
+    }
+
     let credentials: Credentials[] = JSON.parse(localStorage.getItem("credentials") || "[]");
 
     // delete old credentials just in case.
@@ -61,11 +69,11 @@ export default function EditCredentials(props: { onOpenChange: (open?: boolean) 
     setTimeout(() => { window.location.reload(); }, 1500);
   }
 
-  function deleteCredentials(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+  function deleteCredentials(): void {
     let credentials: Credentials[] = JSON.parse(localStorage.getItem("credentials") || "[]");
+    let credentialsIdx = credentials.findIndex((cred) => cred.serverId === props.serverId);
 
-    let cred = credentials.find((cred) => cred.username === username && cred.password === password && cred.serverId === props.serverId)!;
-    credentials.splice(credentials.indexOf(cred), 1);
+    credentials.splice(credentialsIdx, 1);
 
     localStorage.setItem("credentials", JSON.stringify(credentials));
     toast({
@@ -97,7 +105,7 @@ export default function EditCredentials(props: { onOpenChange: (open?: boolean) 
             <Label className="ml-2 font-bold w-full">Username</Label>
           </div>
           <div className="mt-3"></div>
-          <Input placeholder="Username" defaultValue={username} onChange={updateUsername} />
+          <Input placeholder="Username" defaultValue={props.username} ref={usernameInput} />
           <div className="mt-3"></div>
           <div className="flex-row">
             <FontAwesomeIcon icon={faUnlock} width={16} height={16} />
@@ -105,7 +113,7 @@ export default function EditCredentials(props: { onOpenChange: (open?: boolean) 
           </div>
           <div className="mt-3"></div>
           <div className="flex flex-row gap-3">
-            <Input placeholder="Password" type={passwordShown ? "text" : "password"} defaultValue={password} onChange={updatePassword} />
+            <Input placeholder="Password" type={passwordShown ? "text" : "password"} defaultValue={props.password} ref={passwordInput} />
             <Button variant="ghost" onClick={() => { setPasswordShown(!passwordShown) }}>
               <FontAwesomeIcon
                 icon={passwordShown ? faEye : faEyeSlash}

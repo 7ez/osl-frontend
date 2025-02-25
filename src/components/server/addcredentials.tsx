@@ -19,32 +19,32 @@ import { Button } from "@/components/ui/button";
 import { Credentials } from "@/lib/credentials";
 import { useToast } from "@/components/ui/use-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function AddCredentials(props: { onOpenChange: (open?: boolean) => void, serverId: string }) {
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const usernameInput = useRef<HTMLInputElement>(null);
+  const passwordInput = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  function updateUsername(event: React.ChangeEvent<HTMLInputElement>): void {
-    setUsername(event.target.value);
-  }
 
-  function updatePassword(event: React.ChangeEvent<HTMLInputElement>): void {
-    setPassword(event.target.value);
-  }
-
-  function setCredentials(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+  function setCredentials(): void {
+    let username = usernameInput.current?.value;
+    let password = passwordInput.current?.value;
     let credentials: Credentials[] = JSON.parse(localStorage.getItem("credentials") || "[]");
 
-    // delete old credentials just in case.
-    let oldCredentials = credentials.find((cred) => cred.serverId === props.serverId);
-    if (oldCredentials !== undefined) {
-      let oldIdx = credentials.indexOf(oldCredentials);
-
-      credentials = credentials.splice(oldIdx, 1);
+    if (username === undefined || password === undefined || username.length < 2 || password.length < 2) {
+      toast({
+        title: "Uh oh!",
+        description: "Some fields are too short. Make sure they are over 2 characters long.",
+      });
+      return;
     }
+
+    // delete old credentials just in case.
+    let oldCredentialsIdx = credentials.findIndex((cred) => cred.serverId === props.serverId);
+    if (oldCredentialsIdx !== -1)
+      credentials.splice(oldCredentialsIdx, 1);
 
     credentials.push({
       serverId: props.serverId,
@@ -81,7 +81,7 @@ export default function AddCredentials(props: { onOpenChange: (open?: boolean) =
             <Label className="ml-2 font-bold w-full">Username</Label>
           </div>
           <div className="mt-3"></div>
-          <Input placeholder="Username" onChange={updateUsername} />
+          <Input placeholder="Username" ref={usernameInput} />
           <div className="mt-3"></div>
           <div className="flex-row">
             <FontAwesomeIcon icon={faUnlock} width={16} height={16} />
@@ -89,7 +89,7 @@ export default function AddCredentials(props: { onOpenChange: (open?: boolean) =
           </div>
           <div className="mt-3"></div>
           <div className="flex flex-row gap-3">
-            <Input placeholder="Password" type={passwordShown ? "text" : "password"} onChange={updatePassword} />
+            <Input placeholder="Password" type={passwordShown ? "text" : "password"} ref={passwordInput} />
             <Button variant="ghost" onClick={() => { setPasswordShown(!passwordShown) }}>
               <FontAwesomeIcon
                 icon={passwordShown ? faEye : faEyeSlash}

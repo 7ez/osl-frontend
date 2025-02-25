@@ -73,8 +73,8 @@ export default function Server(props: { serverId: string, serverName: string, se
   return (
     <ContextMenu>
       <ContextMenuTrigger disabled={contextMenuDisabled}>
-        <EditServer open={editServer} onOpenChange={toggleEditServer} serverName={props.serverName} serverLogo={props.serverLogo} serverUrl={props.serverUrl} />
-        <DeleteServer open={deleteServer} onOpenChange={toggleDeleteServer} serverName={props.serverName} serverLogo={props.serverLogo} serverUrl={props.serverUrl} />
+        <EditServer open={editServer} onOpenChange={toggleEditServer} serverId={props.serverId} serverName={props.serverName} serverLogo={props.serverLogo} serverUrl={props.serverUrl} />
+        <DeleteServer open={deleteServer} onOpenChange={toggleDeleteServer} serverId={props.serverId} serverName={props.serverName} />
         <Card className="w-[360px] h-40 ml-3">
           <CardHeader className="flex-row">
 

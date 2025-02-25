@@ -19,8 +19,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { SavedServers } from "@/lib/savedservers";
 
-export default function EditServer(props: { open: boolean, onOpenChange: (open?: boolean) => void, serverUrl: string, serverName: string, serverLogo: string }) {
+export default function EditServer(props: { 
+  open: boolean, 
+  onOpenChange: (open?: boolean) => void,
+  serverId: string, 
+  serverUrl: string, 
+  serverName: string, 
+  serverLogo: string 
+}) {
   const [serverName, setServerName] = useState<string>(props.serverName);
   const [serverLogo, setServerLogo] = useState<string>(props.serverLogo);
   const [serverUrl, setServerUrl] = useState<string>(props.serverUrl);
@@ -52,8 +60,9 @@ export default function EditServer(props: { open: boolean, onOpenChange: (open?:
     }
 
 
-    let servers: { name: string, icon: string, url: string }[] = JSON.parse(localStorage.getItem('servers') || '[]');
-    let oldServer = servers.find((server: any) => server.url === serverUrl);
+    // If we're editing a server then we should have an entry in localStorage atleast.
+    let savedServers: SavedServers = JSON.parse(localStorage.getItem("servers")!);
+    let oldServer = savedServers.servers.find((server: any) => server.url === serverUrl);
 
     if (oldServer === undefined) {
       toast({
@@ -63,16 +72,16 @@ export default function EditServer(props: { open: boolean, onOpenChange: (open?:
       return;
     }
 
-    let oldIdx = servers.indexOf(oldServer);
+    let oldIdx = savedServers.servers.indexOf(oldServer);
 
     if (serverName !== props.serverName)
-      servers[oldIdx].name = serverName;
+      savedServers.servers[oldIdx].name = serverName;
     if (serverLogo !== props.serverLogo)
-      servers[oldIdx].icon = serverLogo;
+      savedServers.servers[oldIdx].icon = serverLogo;
     if (serverUrl !== props.serverUrl)
-      servers[oldIdx].url = serverUrl;
+      savedServers.servers[oldIdx].url = serverUrl;
 
-    localStorage.setItem("servers", JSON.stringify(servers));
+    localStorage.setItem("servers", JSON.stringify(savedServers));
     toast({
       title: "Success!",
       description: `${props.serverName} has been edited.`

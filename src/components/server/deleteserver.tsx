@@ -11,12 +11,38 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SavedServers } from "@/lib/savedservers";
 
-export default function DeleteServer(props: { open: boolean, onOpenChange: (open?: boolean) => void, serverUrl: string, serverName: string, serverLogo: string }) {
+export default function DeleteServer(props: { 
+  open: boolean, 
+  onOpenChange: (open?: boolean) => void, 
+  serverId: string, 
+  serverName: string, 
+}) {
   const { toast } = useToast();
 
 
   function deleteServer(): void {
+    let savedServers: SavedServers = JSON.parse(localStorage.getItem("servers")!);
+    let serverIdx = savedServers.servers.findIndex((server) => server.id === props.serverId);
+
+    if (serverIdx === -1) {
+      toast({
+        title: "Uh oh...",
+        description: "The server you're trying to delete appears to be already deleted."
+      })
+      // refresh with a smaller delay in case of a desync
+      setTimeout(() => { window.location.reload(); }, 1500);
+      return;
+    }
+
+    savedServers.servers.splice(serverIdx, 1);
+    localStorage.setItem("servers", JSON.stringify(savedServers));
+    toast({
+      title: "Success!",
+      description: `${props.serverName} has been deleted.`
+    });
+    setTimeout(() => { window.location.reload(); }, 3000);
   }
 
   return (

@@ -1,4 +1,4 @@
-import Settings from "@/components/settings";
+import Settings from "@/components/dialog/settings";
 
 export default function Navbar() {
   return (
